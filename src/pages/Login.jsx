@@ -42,7 +42,7 @@ const Login = () => {
                     </div>
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     <div className="flex flex-col gap-3">
-                      <Button type="submit" className="w-full cursor-pointer" disabled={loading}>
+                      <Button type="submit" className="bg-[#34d39e] hover:bg-[#10B981] w-full cursor-pointer" disabled={loading}>
                         {loading ? "Loading..." : "Login"}
                       </Button>
                     </div>

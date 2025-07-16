@@ -19,8 +19,8 @@ export const login = async (username, password) => {
 
   if (token) {
     // Simpan token & user ke cookie dengan masa berlaku 1 jam (opsional)
-    Cookies.set("token", token, { expires: 1 / 24 }); // 1 jam
-    Cookies.set("user", JSON.stringify(user), { expires: 1 / 24 });
+    Cookies.set("token", token, { expires: 0.0208 }); // 30 menit
+    Cookies.set("user", JSON.stringify(user), { expires: 0.0208 }); // 30 menit
   }
 
   return response.data;

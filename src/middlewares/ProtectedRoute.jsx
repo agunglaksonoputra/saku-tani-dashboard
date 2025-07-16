@@ -1,13 +1,27 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
 import { getToken } from "../services/authService";
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, allowedRoles = [] }) => {
+  const location = useLocation();
   const token = getToken();
+  const user = JSON.parse(Cookies.get("user") || "{}");
+  const role = typeof user?.role === "string" ? user.role : user?.role?.name;
 
+  // 🔐 Belum login
   if (!token) {
-    // Kalau belum login, redirect ke login page
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  // 🚫 Role tidak diizinkan
+  if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
+    if (window.history.length > 1) {
+      window.history.back(); // Kembali ke halaman sebelumnya
+    } else {
+      return <Navigate to="/" replace />;
+    }
+    return null; // Jangan render konten
   }
 
   return children;

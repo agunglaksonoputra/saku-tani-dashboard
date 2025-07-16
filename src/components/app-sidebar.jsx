@@ -6,68 +6,54 @@ import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 
-const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: LayoutPanelLeft,
-      isActive: true,
-    },
-    {
-      title: "Transaksi",
-      url: "#",
-      icon: ScrollText,
-      items: [
-        {
-          title: "Penjualan",
-          url: "#",
-        },
-        {
-          title: "Biaya",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Data Master",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Owner",
-          url: "#",
-        },
-        {
-          title: "Sayuran",
-          url: "#",
-        },
-        {
-          title: "Pelanggan",
-          url: "#",
-        },
-        {
-          title: "Unit",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Laporan",
-      url: "#",
-      icon: FileChartColumn,
-      isActive: true,
-    },
-    {
-      title: "User",
-      url: "/user",
-      icon: User,
-      isActive: true,
-    },
-  ],
-};
+import { getUserRole, filterNavByRole } from "../utils/hasRole";
+
+const navMain = [
+  {
+    title: "Dashboard",
+    url: "/",
+    icon: LayoutPanelLeft,
+    isActive: true,
+  },
+  {
+    title: "Transaksi",
+    url: "#",
+    icon: ScrollText,
+    items: [
+      { title: "Penjualan", url: "#" },
+      { title: "Biaya", url: "#" },
+    ],
+  },
+  {
+    title: "Data Master",
+    url: "#",
+    icon: BookOpen,
+    items: [
+      { title: "Owner", url: "#" },
+      { title: "Sayuran", url: "#" },
+      { title: "Pelanggan", url: "#" },
+      { title: "Unit", url: "#" },
+    ],
+  },
+  {
+    title: "Laporan",
+    url: "#",
+    icon: FileChartColumn,
+    isActive: true,
+  },
+  {
+    title: "User",
+    url: "/user",
+    icon: User,
+    isActive: true,
+    roles: ["admin"], // hanya untuk admin
+  },
+];
 
 export function AppSidebar({ ...props }) {
+  const role = getUserRole();
+  const filteredNavMain = filterNavByRole(navMain, role);
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -88,7 +74,7 @@ export function AppSidebar({ ...props }) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={filteredNavMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
