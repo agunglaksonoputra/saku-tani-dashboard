@@ -17,10 +17,9 @@ const navMain = [
   },
   {
     title: "Transaksi",
-    url: "#",
     icon: ScrollText,
     items: [
-      { title: "Penjualan", url: "#" },
+      { title: "Penjualan", url: "/penjualan" },
       { title: "Biaya", url: "#" },
     ],
   },
