@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import User from "@/pages/User";
 import Sales from "@/pages/transactions/Sales";
+import AddSales from "@/pages/transactions/AddSales";
 
 const AppRoutes = () => {
   return (
@@ -29,6 +30,15 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute allowedRoles={["admin", "operator", "owner"]}>
             <Sales />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/penjualan/tambah"
+        element={
+          <ProtectedRoute allowedRoles={["admin", "operator"]}>
+            <AddSales />
           </ProtectedRoute>
         }
       />

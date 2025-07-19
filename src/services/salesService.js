@@ -2,8 +2,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
-
 // Create axios instance with default config
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -85,9 +83,9 @@ export const salesService = {
   // Import sales data
   importSales: async (file) => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("SakuTani", file);
 
-    const response = await apiClient.post("/sales/import", formData, {
+    const response = await apiClient.post("/excel/import-sales", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

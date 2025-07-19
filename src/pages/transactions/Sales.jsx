@@ -1,22 +1,44 @@
-// pages/Sales.js
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
+import { Upload, Plus, RefreshCw } from "lucide-react";
 import MainLayout from "../../layouts/Main";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Upload, Plus, RefreshCw } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { formatCurrency, formatDate, formatDecimalSmart, formatWeight, capitalizeFirst } from "@/utils/formatters";
 import { useSales } from "../../hooks/useSales";
-import { salesService } from "../../services/salesService";
 import SalesFilter from "../../components/SalesFilter";
 import SalesTable from "../../components/SalesTable";
 import SalesPagination from "../../components/SalesPagination";
 import SalesSummary from "../../components/SalesSummary";
 
 const Sales = () => {
-  const { sales, loading, error, pagination, filters, handlePageChange, handleLimitChange, handleFilterChange, handleSort, clearFilters, refreshData } = useSales();
+  const {
+    sales,
+    loading,
+    pagination,
+    filters,
+    handlePageChange,
+    handleLimitChange,
+    handleFilterChange,
+    handleSort,
+    clearFilters,
+    refreshData,
+    handleAdd,
+    handleView,
+    handleDelete,
+    confirmDelete,
+    handleImport,
+    importing,
+    selectedSale,
+    dialogOpen,
+    isDeleteDialogOpen,
+    setDialogOpen,
+    setIsDeleteDialogOpen,
+  } = useSales();
 
-  const [importing, setImporting] = useState(false);
-  const [importError, setImportError] = useState(null);
   const tableContainerRef = useRef(null);
 
   const breadcrumb = (
@@ -29,70 +51,24 @@ const Sales = () => {
     </Breadcrumb>
   );
 
-  const handleImport = async (event) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    setImporting(true);
-    setImportError(null);
-
-    try {
-      await salesService.importSales(file);
-      refreshData();
-      // Reset file input
+    const isValidExtension = file.name.toLowerCase().endsWith(".xlsx");
+    if (!isValidExtension) {
+      toast.error("Silakan unggah file dengan format .xlsx");
       event.target.value = "";
-    } catch (err) {
-      setImportError(err.message || "Gagal mengimpor data");
-    } finally {
-      setImporting(false);
+      return;
     }
-  };
 
-  const handleAdd = () => {
-    // Navigate to add sales page
-    // You can implement this with your router
-    console.log("Navigate to add sales page");
-  };
-
-  const handleEdit = (id) => {
-    // Navigate to edit sales page
-    console.log("Navigate to edit sales page:", id);
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-      try {
-        await salesService.deleteSale(id);
-        refreshData();
-      } catch (err) {
-        console.error("Error deleting sale:", err);
-        alert("Gagal menghapus data");
-      }
-    }
-  };
-
-  const handleView = (id) => {
-    // Navigate to view sales detail page
-    console.log("Navigate to view sales detail:", id);
+    handleImport(file);
+    event.target.value = "";
   };
 
   return (
     <MainLayout header={breadcrumb}>
       <div className="space-y-6">
-        {/* Error Alert */}
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-
-        {/* Import Error Alert */}
-        {importError && (
-          <Alert variant="destructive">
-            <AlertDescription>{importError}</AlertDescription>
-          </Alert>
-        )}
-
         {/* Action Buttons */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -103,12 +79,16 @@ const Sales = () => {
           </div>
 
           <div className="flex gap-2">
-            <div className="relative">
-              <input type="file" accept=".csv,.xlsx,.xls" onChange={handleImport} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" disabled={importing} />
-              <Button variant="outline" size="sm" disabled={importing}>
-                <Upload className="w-4 h-4 mr-2" />
-                {importing ? "Importing..." : "Import"}
-              </Button>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="file-upload">
+                <Button variant="outline" size="sm" disabled={importing} asChild>
+                  <span>
+                    <Upload className="w-4 h-4 mr-2" />
+                    {importing ? "Importing..." : "Import"}
+                  </span>
+                </Button>
+              </Label>
+              <Input id="file-upload" type="file" accept=".xlsx" onChange={handleFileChange} disabled={importing} className="hidden" />
             </div>
 
             <Button variant="default" size="sm" onClick={handleAdd}>
@@ -119,19 +99,98 @@ const Sales = () => {
         </div>
 
         {/* Sales Summary */}
-        <SalesSummary pagination={pagination} />
+        <SalesSummary pagination={pagination} filters={filters} />
 
         {/* Sales Filter */}
         <SalesFilter filters={filters} onFilterChange={handleFilterChange} onClearFilters={clearFilters} />
 
         {/* Sales Table */}
         <div ref={tableContainerRef}>
-          <SalesTable sales={sales} loading={loading} onSort={handleSort} filters={filters} pagination={pagination} onEdit={handleEdit} onDelete={handleDelete} onView={handleView} />
+          <SalesTable sales={sales} loading={loading} onSort={handleSort} filters={filters} pagination={pagination} onDelete={handleDelete} onView={handleView} />
         </div>
 
         {/* Pagination */}
         <SalesPagination pagination={pagination} onPageChange={handlePageChange} onLimitChange={handleLimitChange} />
         {/* {!loading && sales.length > 0 && <SalesPagination pagination={pagination} onPageChange={handlePageChange} onLimitChange={handleLimitChange} />} */}
+
+        {/* Dialog View Data */}
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Detail Penjualan</DialogTitle>
+              <DialogDescription>Informasi lengkap transaksi penjualan</DialogDescription>
+            </DialogHeader>
+
+            {selectedSale ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm table-auto border-separate border-spacing-y-2">
+                  <tbody>
+                    <tr>
+                      <td className="font-medium w-1/3">Pelanggan</td>
+                      <td className="w-4">:</td>
+                      <td>{selectedSale.customer}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Sayuran</td>
+                      <td>:</td>
+                      <td>{capitalizeFirst(selectedSale.item_name)}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Unit</td>
+                      <td>:</td>
+                      <td>{selectedSale.unit}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Quantity</td>
+                      <td>:</td>
+                      <td>{formatDecimalSmart(selectedSale.quantity)}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Total Berat</td>
+                      <td>:</td>
+                      <td>{formatWeight(selectedSale.total_weight_kg)}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Total Harga</td>
+                      <td>:</td>
+                      <td>{formatCurrency(selectedSale.total_price)}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Tanggal</td>
+                      <td>:</td>
+                      <td>{formatDate(selectedSale.date)}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Dibuat oleh</td>
+                      <td>:</td>
+                      <td>{selectedSale.created_by}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div>Memuat data...</div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Dialog Delete */}
+        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Hapus Data Penjualan</DialogTitle>
+            </DialogHeader>
+            <p>Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.</p>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+                Batal
+              </Button>
+              <Button variant="destructive" onClick={confirmDelete}>
+                Hapus
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </MainLayout>
   );

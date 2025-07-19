@@ -3,8 +3,10 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { TrendingUp, Weight, DollarSign, Package } from "lucide-react";
 
-const SalesSummary = ({ pagination }) => {
-  const { total, totalPrice, totalWeightKg, avgPricePerTransaction } = pagination;
+const SalesSummary = ({ pagination, filters = {} }) => {
+  const { totalPrice, totalWeightKg, avgPricePerTransaction, totalFilter } = pagination;
+
+  const hasActiveFilters = Object.values(filters).some((v) => v !== "" && v !== null && v !== undefined);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("id-ID", {
@@ -21,14 +23,15 @@ const SalesSummary = ({ pagination }) => {
   const summaryCards = [
     {
       title: "Total Transaksi",
-      value: total.toLocaleString("id-ID"),
+      description: hasActiveFilters ? undefined : "Bulan ini",
+      value: totalFilter.toLocaleString("id-ID"),
       icon: Package,
       color: "text-blue-600",
       bgColor: "bg-blue-50",
     },
     {
       title: "Total Pendapatan",
-      description: "Bulan ini",
+      description: hasActiveFilters ? undefined : "Bulan ini",
       value: formatCurrency(totalPrice),
       icon: DollarSign,
       color: "text-green-600",
@@ -36,7 +39,7 @@ const SalesSummary = ({ pagination }) => {
     },
     {
       title: "Total Berat",
-      description: "Bulan ini",
+      description: hasActiveFilters ? undefined : "Bulan ini",
       value: formatWeight(totalWeightKg),
       icon: Weight,
       color: "text-purple-600",
@@ -44,7 +47,7 @@ const SalesSummary = ({ pagination }) => {
     },
     {
       title: "Rata-rata per Transaksi",
-      description: "Bulan ini",
+      description: hasActiveFilters ? undefined : "Bulan ini",
       value: formatCurrency(avgPricePerTransaction),
       icon: TrendingUp,
       color: "text-orange-600",
@@ -59,7 +62,7 @@ const SalesSummary = ({ pagination }) => {
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <div>
               <CardTitle className="text-sm font-medium text-gray-600">{card.title}</CardTitle>
-              <CardDescription className="italic">{card.description}</CardDescription>
+              {card.description ? <CardDescription className="italic">{card.description}</CardDescription> : <div className="h-5" />}
             </div>
             <div className={`p-2 rounded-full ${card.bgColor}`}>
               <card.icon className={`h-4 w-4 ${card.color}`} />
