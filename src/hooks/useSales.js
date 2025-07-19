@@ -176,3 +176,32 @@ export const useSales = () => {
     handleImport,
   };
 };
+
+export const useCustomers = () => {
+  const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchCustomers = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await salesService.getCustomers();
+      setCustomers(response.data || []);
+    } catch (err) {
+      setError(err.message || "Failed to fetch customers");
+      console.error("Error fetching customers:", err);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCustomers();
+  }, [fetchCustomers]);
+
+  return { customers, loading, error };
+};
