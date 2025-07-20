@@ -33,3 +33,34 @@ export const formatWeight = (weight) => {
 export const capitalizeFirst = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+export const parseAndRound = (value, decimals = 2) => {
+  const num = parseFloat(value);
+  if (isNaN(num)) return 0;
+  return parseFloat(num.toFixed(decimals));
+};
+
+export const parseAndRoundInt = (value) => {
+  const num = parseFloat(value);
+  if (isNaN(num)) return 0;
+  return Math.round(num);
+};
+
+export const formatMonthYear = (dateInput) => {
+  const date = new Date(dateInput);
+  if (isNaN(date)) return "";
+  return date.toLocaleDateString("id-ID", {
+    year: "numeric",
+    month: "long",
+  });
+};
+
+export const formatCurrencyWithoutSymbol = (amount) => {
+  const num = parseFloat(amount);
+  if (isNaN(num)) return "0";
+  return new Intl.NumberFormat("id-ID", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+    useGrouping: true,
+  }).format(Math.round(num));
+};
