@@ -11,7 +11,7 @@ import { FormField } from "./FormField";
 import { SelectField } from "./SelectField";
 
 const AddSalesForm = () => {
-  const { customers, items, units, loading: loadingMaster } = useMasterData();
+  const { customers, items, units } = useMasterData();
   const { formData, selectedDate, loading, error, setSelectedDate, handleChange, handleSelectChange, handleSubmit, handleCancel } = useSalesForm();
 
   return (
@@ -66,7 +66,7 @@ const AddSalesForm = () => {
           <Button type="button" variant="outline" onClick={handleCancel}>
             Batal
           </Button>
-          <Button type="submit" disabled={loading || loadingMaster}>
+          <Button type="submit" disabled={loading}>
             {loading ? "Menyimpan..." : "Simpan"}
           </Button>
         </div>

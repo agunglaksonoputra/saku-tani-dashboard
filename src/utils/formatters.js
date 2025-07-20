@@ -14,6 +14,12 @@ export const formatDate = (dateString) => {
   });
 };
 
+export const formatDateISO = (dateInput) => {
+  const date = new Date(dateInput);
+  if (isNaN(date)) return "";
+  return date.toISOString().split("T")[0];
+};
+
 export const formatDecimalSmart = (value) => {
   const num = parseFloat(value);
   if (isNaN(num)) return value;

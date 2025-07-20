@@ -1,10 +1,10 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { TrendingUp, Weight, DollarSign, Package } from "lucide-react";
-import { formatCurrency, formatWeight } from "@/utils/formatters";
+import { TrendingUp, DollarSign, Package } from "lucide-react";
+import { formatCurrency } from "@/utils/formatters";
 
-const SalesSummary = ({ pagination, filters = {} }) => {
-  const { totalPrice, totalWeightKg, avgPricePerTransaction, totalFilter } = pagination;
+const ExpensesSummary = ({ pagination, filters = {} }) => {
+  const { totalPrice, avgPricePerTransaction, totalFilter } = pagination;
 
   const hasActiveFilters = Object.values(filters).some((v) => v !== "" && v !== null && v !== undefined);
 
@@ -18,20 +18,12 @@ const SalesSummary = ({ pagination, filters = {} }) => {
       bgColor: "bg-blue-50",
     },
     {
-      title: "Total Pendapatan",
+      title: "Total Pengeluaran",
       description: hasActiveFilters ? undefined : "Bulan ini",
       value: formatCurrency(totalPrice),
       icon: DollarSign,
       color: "text-green-600",
       bgColor: "bg-green-50",
-    },
-    {
-      title: "Total Berat",
-      description: hasActiveFilters ? undefined : "Bulan ini",
-      value: formatWeight(totalWeightKg),
-      icon: Weight,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
     },
     {
       title: "Rata-rata per Transaksi",
@@ -44,7 +36,7 @@ const SalesSummary = ({ pagination, filters = {} }) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
       {summaryCards.map((card, index) => (
         <Card key={index} className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -65,4 +57,4 @@ const SalesSummary = ({ pagination, filters = {} }) => {
   );
 };
 
-export default SalesSummary;
+export default ExpensesSummary;

@@ -20,7 +20,7 @@ const navMain = [
     icon: ScrollText,
     items: [
       { title: "Penjualan", url: "/penjualan" },
-      { title: "Biaya", url: "#" },
+      { title: "Biaya", url: "/biaya" },
     ],
   },
   {
@@ -36,7 +36,7 @@ const navMain = [
   },
   {
     title: "Laporan",
-    url: "#",
+    url: "/laporan",
     icon: FileChartColumn,
     isActive: true,
   },

@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { formatCurrency, formatDate, formatDecimalSmart, formatWeight, capitalizeFirst } from "@/utils/formatters";
-import { useSales } from "../../hooks/useSales";
+import { useSales } from "@/hooks/useSales";
 import SalesFilter from "../../components/SalesFilter";
 import SalesTable from "../../components/SalesTable";
 import SalesPagination from "../../components/SalesPagination";

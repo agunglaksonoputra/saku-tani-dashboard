@@ -2,13 +2,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal, Trash2, Eye } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatCurrency, formatDate, formatDecimalSmart, formatWeight, capitalizeFirst } from "@/utils/formatters";
+import { formatCurrency, formatDate, formatDecimalSmart } from "@/utils/formatters";
 
-const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
+const ExpensesTable = ({ expenses, loading, pagination, onDelete, onView }) => {
   if (loading) {
     return (
       <div className="overflow-hidden">
@@ -16,11 +15,9 @@ const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
           <TableHeader>
             <TableRow className="bg-gray-50">
               <TableHead className="w-16">No</TableHead>
-              <TableHead>Pelanggan</TableHead>
-              <TableHead>Sayuran</TableHead>
+              <TableHead>Nama</TableHead>
               <TableHead>Unit</TableHead>
               <TableHead>Quantity</TableHead>
-              <TableHead>Total Berat</TableHead>
               <TableHead>Total Harga</TableHead>
               <TableHead>Tanggal</TableHead>
               <TableHead className="w-32">Action</TableHead>
@@ -50,49 +47,39 @@ const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
         <TableHeader>
           <TableRow className="bg-gray-50">
             <TableHead className="w-16">No</TableHead>
-            <TableHead>Pelanggan</TableHead>
-            <TableHead>Sayuran</TableHead>
+            <TableHead>Nama</TableHead>
             <TableHead>Unit</TableHead>
             <TableHead>Quantity</TableHead>
-            <TableHead>Total Berat</TableHead>
             <TableHead>Total Harga</TableHead>
             <TableHead>Tanggal</TableHead>
             <TableHead className="w-32">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sales.length === 0 ? (
+          {expenses.length === 0 ? (
             <TableRow>
               <TableCell colSpan={9} className="text-center py-8 text-gray-500">
-                Tidak ada data penjualan
+                Tidak ada data biaya
               </TableCell>
             </TableRow>
           ) : (
-            sales.map((sale, index) => (
-              <TableRow key={sale.id} className="hover:bg-gray-50">
+            expenses.map((expense, index) => (
+              <TableRow key={expense.id} className="hover:bg-gray-50">
                 <TableCell className="font-medium">{(pagination.page - 1) * pagination.limit + index + 1}</TableCell>
                 <TableCell>
-                  <div className="font-medium">{sale.customer}</div>
+                  <div className="font-medium">{expense.name}</div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline" className="capitalize">
-                    {capitalizeFirst(sale.item_name)}
-                  </Badge>
+                  <span className="text-sm text-gray-600">{expense.unit}</span>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm text-gray-600">{sale.unit}</span>
+                  <span className="font-medium">{formatDecimalSmart(expense.quantity)}</span>
                 </TableCell>
                 <TableCell>
-                  <span className="font-medium">{formatDecimalSmart(sale.quantity)}</span>
+                  <div className="font-medium text-green-600">{formatCurrency(expense.total_price)}</div>
                 </TableCell>
                 <TableCell>
-                  <div className="font-medium text-blue-600">{formatWeight(sale.total_weight_kg)}</div>
-                </TableCell>
-                <TableCell>
-                  <div className="font-medium text-green-600">{formatCurrency(sale.total_price)}</div>
-                </TableCell>
-                <TableCell>
-                  <div className="text-sm">{formatDate(sale.date)}</div>
+                  <div className="text-sm">{formatDate(expense.date)}</div>
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
@@ -102,7 +89,7 @@ const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => onView(sale.id)}>
+                      <DropdownMenuItem onClick={() => onView(expense.id)}>
                         <Eye className="mr-2 h-4 w-4" />
                         Lihat Detail
                       </DropdownMenuItem>
@@ -110,7 +97,7 @@ const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
                         <Edit className="mr-2 h-4 w-4" />
                         Edit
                       </DropdownMenuItem> */}
-                      <DropdownMenuItem onClick={() => onDelete(sale.id)} className="text-red-600">
+                      <DropdownMenuItem onClick={() => onDelete(expense.id)} className="text-red-600">
                         <Trash2 className="mr-2 h-4 w-4" />
                         Hapus
                       </DropdownMenuItem>
@@ -126,4 +113,4 @@ const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
   );
 };
 
-export default SalesTable;
+export default ExpensesTable;
