@@ -12,4 +12,9 @@ export const reportService = {
     });
     return response;
   },
+
+  getReportCurent: async () => {
+    const response = await apiClient.get(`/report/current`);
+    return response.data;
+  },
 };

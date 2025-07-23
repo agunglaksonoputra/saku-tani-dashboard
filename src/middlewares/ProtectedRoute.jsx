@@ -16,12 +16,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
 
   // 🚫 Role tidak diizinkan
   if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-    if (window.history.length > 1) {
-      window.history.back(); // Kembali ke halaman sebelumnya
-    } else {
-      return <Navigate to="/" replace />;
-    }
-    return null; // Jangan render konten
+    return <Navigate to="/" replace />;
   }
 
   return children;

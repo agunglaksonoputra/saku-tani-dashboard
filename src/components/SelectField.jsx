@@ -2,7 +2,7 @@ import React from "react";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export const SelectField = ({ label, value, onValueChange, placeholder, options = [], className = "w-[180px]" }) => {
+export const SelectField = ({ label, value, onValueChange, placeholder, options = [], optionKey = "id", optionValue = "name", className = "w-[180px]" }) => {
   return (
     <div className="flex flex-col gap-2">
       <Label>{label}</Label>
@@ -13,7 +13,7 @@ export const SelectField = ({ label, value, onValueChange, placeholder, options 
         <SelectContent>
           <SelectGroup>
             {options.map((option) => (
-              <SelectItem key={option.id} value={option.name}>
+              <SelectItem key={option[optionKey]} value={option[optionValue]}>
                 {option.name}
               </SelectItem>
             ))}

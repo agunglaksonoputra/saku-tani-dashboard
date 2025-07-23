@@ -1,11 +1,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Trash2, Eye } from "lucide-react";
+import { MoreHorizontal, Trash2, Eye, Trash2Icon } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency, formatDate, formatDecimalSmart, formatWeight, capitalizeFirst } from "@/utils/formatters";
+import { isMoreThan3Days } from "@/utils/dateUtils";
 
 const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
   if (loading) {
@@ -93,28 +95,40 @@ const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
                 <TableCell>
                   <div className="text-sm">{formatDate(sale.date)}</div>
                 </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <MoreHorizontal className="h-4 w-4" />
+                <TableCell className="flex gap-2">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="success" onClick={() => onView(sale.id)}>
+                        <Eye />
                       </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => onView(sale.id)}>
-                        <Eye className="mr-2 h-4 w-4" />
-                        Lihat Detail
-                      </DropdownMenuItem>
-                      {/* <DropdownMenuItem onClick={() => onEdit(sale.id)}>
-                        <Edit className="mr-2 h-4 w-4" />
-                        Edit
-                      </DropdownMenuItem> */}
-                      <DropdownMenuItem onClick={() => onDelete(sale.id)} className="text-red-600">
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Hapus
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>View</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  {isMoreThan3Days(sale.date) ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="secondary" disabled>
+                          <Trash2Icon />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Tidak bisa dihapus (lebih dari 3 hari)</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="destructive" onClick={() => onDelete(sale.id)}>
+                          <Trash2Icon />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Hapus</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
                 </TableCell>
               </TableRow>
             ))

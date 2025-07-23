@@ -7,7 +7,7 @@ import ReportTable from "@/components/ReportTabel";
 import { useReport } from "@/hooks/useReport";
 
 const Report = () => {
-  const { report, loading, refreshData, handleExport } = useReport();
+  const { report, loading, exporting, refreshData, handleExport } = useReport();
 
   const tableContainerRef = useRef(null);
 
@@ -35,7 +35,7 @@ const Report = () => {
           <div className="flex gap-2">
             <Button variant="default" size="sm" onClick={handleExport}>
               <Download className="w-4 h-4 mr-2" />
-              Export
+              {exporting ? "Exporting..." : "Export"}
             </Button>
           </div>
         </div>

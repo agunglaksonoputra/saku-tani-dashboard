@@ -14,8 +14,24 @@ export const hasRole = (roles = []) => {
 };
 
 export const filterNavByRole = (navItems, role) => {
-  return navItems.filter((item) => {
-    if (!item.roles) return true;
-    return item.roles.includes(role);
-  });
+  return navItems
+    .map((item) => {
+      // Jika ada children (sub-menu)
+      if (item.items) {
+        const filteredItems = item.items.filter((child) => !child.roles || child.roles.includes(role));
+
+        // Jika tidak ada child yang boleh ditampilkan, sembunyikan item parent
+        if (filteredItems.length === 0) return null;
+
+        return { ...item, items: filteredItems };
+      }
+
+      // Untuk item tanpa children
+      if (!item.roles || item.roles.includes(role)) {
+        return item;
+      }
+
+      return null; // Tidak cocok, jangan tampilkan
+    })
+    .filter(Boolean); // Hapus nilai null
 };

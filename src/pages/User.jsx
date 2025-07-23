@@ -11,6 +11,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useUsers } from "../hooks/useUsers";
 import { useUser } from "../hooks/useUser";
 import { toast } from "sonner";
+import { FilePen, Plus, Trash2 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const User = () => {
   const { users, loading, error, refetch } = useUsers();
@@ -187,7 +189,8 @@ const User = () => {
       ) : (
         <>
           <div className="flex justify-end">
-            <Button className="w-20" variant="success" size="sm" onClick={() => setAddOpen(true)}>
+            <Button variant="success" size="sm" onClick={refetch}>
+              <Plus className="w-4 h-4 mr-2" />
               Tambah
             </Button>
           </div>
@@ -218,12 +221,26 @@ const User = () => {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-2">
-                          <Button variant="warning" size="sm" onClick={() => openEditModal(user)} disabled={saving || deleting}>
-                            Edit
-                          </Button>
-                          <Button variant="destructive" size="sm" onClick={() => openDeleteModal(user)} disabled={saving || deleting}>
-                            Delete
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button variant="warning" size="sm" onClick={() => openEditModal(user)} disabled={saving || deleting}>
+                                <FilePen />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Edit</p>
+                            </TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button variant="destructive" size="sm" onClick={() => openDeleteModal(user)} disabled={saving || deleting}>
+                                <Trash2 />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Delete</p>
+                            </TooltipContent>
+                          </Tooltip>
                         </div>
                       </TableCell>
                     </TableRow>

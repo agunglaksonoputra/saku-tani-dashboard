@@ -8,6 +8,7 @@ import AddSales from "@/pages/transactions/AddSales";
 import Expenses from "@/pages/transactions/Expenses";
 import AddExpenses from "@/pages/transactions/AddExpenses";
 import Report from "@/pages/Report";
+import ProfitShare from "@/pages/ProfitShare";
 
 const protectedRoutes = [
   {
@@ -37,6 +38,11 @@ const protectedRoutes = [
   {
     path: "/biaya/form",
     element: <AddExpenses />,
+    allowedRoles: ["admin", "operator"],
+  },
+  {
+    path: "/bagi-hasil",
+    element: <ProfitShare />,
     allowedRoles: ["admin", "operator"],
   },
   {

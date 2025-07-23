@@ -48,7 +48,7 @@ const SalesPagination = ({ pagination, onPageChange, onLimitChange }) => {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="25">20</SelectItem>
+            <SelectItem value="20">20</SelectItem>
             <SelectItem value="50">50</SelectItem>
             <SelectItem value="100">100</SelectItem>
           </SelectContent>

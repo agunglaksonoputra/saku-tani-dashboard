@@ -39,19 +39,6 @@ export const useReport = () => {
     fetchReport();
   };
 
-  //   const handleExport = async () => {
-  //     setExporting(true);
-  //     try {
-  //       await reportService.exportReport();
-  //       toast.success("Export dimulai");
-  //     } catch (err) {
-  //       const apiMessage = err.response?.data?.message || err.message || "Gagal menexport data";
-  //       toast.error(apiMessage);
-  //     } finally {
-  //       setExporting(false);
-  //     }
-  //   };
-
   const handleExport = async () => {
     setExporting(true);
 

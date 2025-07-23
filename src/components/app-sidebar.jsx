@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { BookOpen, Command, FileChartColumn, LayoutPanelLeft, ScrollText, SquareTerminal, User } from "lucide-react";
+import { BookOpen, Command, FileChartColumn, LayoutPanelLeft, Percent, ScrollText, Users } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
@@ -13,7 +13,6 @@ const navMain = [
     title: "Dashboard",
     url: "/",
     icon: LayoutPanelLeft,
-    isActive: true,
   },
   {
     title: "Transaksi",
@@ -28,7 +27,7 @@ const navMain = [
     url: "#",
     icon: BookOpen,
     items: [
-      { title: "Owner", url: "#" },
+      { title: "Owner", url: "#", roles: ["admin"] },
       { title: "Sayuran", url: "#" },
       { title: "Pelanggan", url: "#" },
       { title: "Unit", url: "#" },
@@ -38,14 +37,19 @@ const navMain = [
     title: "Laporan",
     url: "/laporan",
     icon: FileChartColumn,
-    isActive: true,
+    roles: ["admin", "owner", "operator"],
+  },
+  {
+    title: "Bagi Hasil",
+    url: "/bagi-hasil",
+    icon: Percent,
+    roles: ["admin", "owner", "operator"],
   },
   {
     title: "User",
     url: "/user",
-    icon: User,
-    isActive: true,
-    roles: ["admin"], // hanya untuk admin
+    icon: Users,
+    roles: ["admin"],
   },
 ];
 
@@ -60,11 +64,16 @@ export function AppSidebar({ ...props }) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link to="/">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                {/* <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Command className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">Acme Inc</span>
+                  <span className="truncate text-xs">Enterprise</span>
+                </div> */}
+                <img src="logo.png" alt="Logo" width="40" height="40" className="aspect-square" />
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">Saku Tani</span>
                   <span className="truncate text-xs">Enterprise</span>
                 </div>
               </Link>

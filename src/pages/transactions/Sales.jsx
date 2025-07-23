@@ -91,7 +91,7 @@ const Sales = () => {
               <Input id="file-upload" type="file" accept=".xlsx" onChange={handleFileChange} disabled={importing} className="hidden" />
             </div>
 
-            <Button variant="default" size="sm" onClick={handleAdd}>
+            <Button variant="success" size="sm" onClick={handleAdd}>
               <Plus className="w-4 h-4 mr-2" />
               Tambah
             </Button>
