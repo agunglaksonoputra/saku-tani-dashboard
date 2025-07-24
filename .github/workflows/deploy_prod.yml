@@ -1,0 +1,57 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Frontend to VPS via SSH
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Connect to VPS and Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+
+          script: set -e
+
+            PROJECT_DIR="${{ secrets.DIR_PROD }}"
+            REPO_URL="https://github.com/agunglaksonoputra/saku-tani-dashboard.git"
+
+            echo "📁 Cek direktori proyek..."
+            if [ -d "$PROJECT_DIR" ]; then
+            if [ ! -d "$PROJECT_DIR/.git" ]; then
+            echo "⚠️ Folder sudah ada tapi bukan Git repo. Menghapusnya..."
+            rm -rf "$PROJECT_DIR"
+            fi
+            fi
+
+            if [ ! -d "$PROJECT_DIR" ]; then
+            echo "⬇️ Clone repository..."
+            git clone "$REPO_URL" "$PROJECT_DIR"
+            fi
+
+            cd "$PROJECT_DIR"
+
+            echo "🔄 Pull branch main..."
+            git fetch origin
+            git checkout main || git checkout -b main origin/main
+            git pull origin main
+
+            if [ -f ".env" ]; then
+            echo "🛑 File .env sudah ada. Tidak membuat ulang."
+            else
+            echo "🧪 Membuat file .env dari secret..."
+            echo "${{ secrets.ENV_PROD }}" > .env
+            fi
+
+            echo "🐳 Jalankan Docker Compose..."
+            ENV_FILE=.env PORT=3017 docker compose up -d --build
+
+            echo "✅ Frontend berhasil dideploy!"
