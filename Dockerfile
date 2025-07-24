@@ -9,6 +9,4 @@ RUN npm run build
 
 RUN npm install -g serve
 
-EXPOSE 3015
-
 CMD ["serve", "-s", "dist", "-l", "3015"]
