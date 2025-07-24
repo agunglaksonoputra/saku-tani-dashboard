@@ -52,6 +52,6 @@ jobs:
             fi
 
             echo "🐳 Jalankan Docker Compose..."
-            ENV_FILE=.env PORT=3017 docker compose up -d --build
+            ENV_FILE=.env PORT=3015 docker compose up -d --build
 
             echo "✅ Frontend berhasil dideploy!"
