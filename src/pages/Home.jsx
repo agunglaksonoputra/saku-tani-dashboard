@@ -5,7 +5,7 @@ import { SectionCards } from "@/components/section-card";
 import { useDashboard } from "@/hooks/useDashboard";
 
 const Home = () => {
-  const { report, loading, error, refreshData } = useDashboard();
+  const { report, loading } = useDashboard();
 
   const breadcrumb = (
     <Breadcrumb>
