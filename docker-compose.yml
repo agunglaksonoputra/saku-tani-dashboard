@@ -8,6 +8,6 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${PORT}:80"
+      - "${PORT}:5173"
     env_file:
       - ${ENV_FILE}
