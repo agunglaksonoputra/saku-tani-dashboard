@@ -72,11 +72,11 @@ export function SectionCards({ report, loading }) {
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           {report.growth_sales >= 0 ? (
             <div className="line-clamp-1 flex gap-2 font-medium text-green-600">
-              Penjualan naik +{parseAndRound(report.growth_sales, 0)}% bulan ini <TrendingUp className="size-4" />
+              Penjualan naik +{parseAndRound(report.growth_sales, 0)}% pada bulan ini <TrendingUp className="size-4" />
             </div>
           ) : (
             <div className="line-clamp-1 flex gap-2 font-medium text-red-600">
-              Turun {parseAndRound(report.growth_sales, 0)}% pada periode ini
+              Turun {parseAndRound(report.growth_sales, 0)}% pada bulan ini
               <TrendingDown className="size-4" />
             </div>
           )}
@@ -98,12 +98,12 @@ export function SectionCards({ report, loading }) {
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           {report.growth_expenses >= 0 ? (
             <div className="line-clamp-1 flex gap-2 font-medium text-red-600">
-              Pengeluaran naik +{parseAndRound(report.growth_expenses, 0)}% bulan ini
+              Pengeluaran naik +{parseAndRound(report.growth_expenses, 0)}% pada bulan ini
               <TrendingUp className="size-4" />
             </div>
           ) : (
             <div className="line-clamp-1 flex gap-2 font-medium text-green-600">
-              Pengeluaran turun {parseAndRound(report.growth_expenses, 0)}% bulan ini
+              Pengeluaran turun {parseAndRound(report.growth_expenses, 0)}% pada bulan ini
               <TrendingDown className="size-4" />
             </div>
           )}
@@ -125,12 +125,12 @@ export function SectionCards({ report, loading }) {
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           {report.growth_profit >= 0 ? (
             <div className="line-clamp-1 flex gap-2 font-medium text-green-600">
-              Laba naik +{parseAndRound(report.growth_profit, 0)}% bulan ini
+              Laba naik +{parseAndRound(report.growth_profit, 0)}% pada bulan ini
               <TrendingUp className="size-4" />
             </div>
           ) : (
             <div className="line-clamp-1 flex gap-2 font-medium text-red-600">
-              Laba turun {parseAndRound(report.growth_profit, 0)}% bulan ini
+              Laba turun {parseAndRound(report.growth_profit, 0)}% pada bulan ini
               <TrendingDown className="size-4" />
             </div>
           )}

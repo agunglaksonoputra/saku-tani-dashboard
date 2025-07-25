@@ -43,7 +43,7 @@ export const useUser = (id) => {
     }
   };
 
-  const remove = async () => {
+  const remove = async (id) => {
     setDeleting(true);
     setError(null);
     try {
