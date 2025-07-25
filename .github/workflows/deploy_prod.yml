@@ -49,6 +49,7 @@ jobs:
             echo "🔄 Pull branch main..."
             git fetch origin
             git checkout main || git checkout -b main origin/main
+            git reset --hard origin/main
             git pull origin main
 
             if [ -f ".env" ]; then
