@@ -35,6 +35,11 @@ jobs:
               git clone "$REPO_URL" "$PROJECT_DIR"
             fi
 
+            if [ ! -d "$PROJECT_DIR/.git" ]; then
+              echo "❌ Gagal clone repo dengan benar!"
+              exit 
+            fi
+
       - name: 🔄 Update branch & .env
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -76,7 +81,8 @@ jobs:
             set -e
             cd "${{ secrets.DIR_PROD }}"
             echo "🚀 Docker Compose build tanpa cache..."
-            ENV_FILE=.env PORT=3015 docker compose up -d --build --no-cache
+            ENV_FILE=.env PORT=3015 docker compose build --no-cache
+            ENV_FILE=.env PORT=3015 docker compose up -d
 
       - name: ✅ Selesai
         run: echo "✅ Deployment frontend selesai!"
