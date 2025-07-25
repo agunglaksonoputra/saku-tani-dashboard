@@ -11,33 +11,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📂 Connect to VPS and Deploy
+      - name: 🔑 Setup SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: 🧩 Clone repository di VPS
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
             set -e
-
             PROJECT_DIR="${{ secrets.DIR_PROD }}"
             REPO_URL="https://github.com/agunglaksonoputra/saku-tani-dashboard.git"
 
-            echo "📁 Cek direktori proyek..."
             if [ -d "$PROJECT_DIR" ]; then
               if [ ! -d "$PROJECT_DIR/.git" ]; then
-                echo "⚠️ Folder sudah ada tapi bukan Git repo. Menghapusnya..."
+                echo "🧹 Bukan repo git, hapus..."
                 rm -rf "$PROJECT_DIR"
               fi
             fi
 
             if [ ! -d "$PROJECT_DIR" ]; then
-              echo "⬇️ Clone repository..."
+              echo "📥 Clone repo..."
               git clone "$REPO_URL" "$PROJECT_DIR"
             fi
 
-            cd "$PROJECT_DIR"
+      - name: 🔄 Update branch & .env
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            set -e
+            cd "${{ secrets.DIR_PROD }}"
 
             echo "🔄 Pull branch main..."
             git fetch origin
@@ -45,13 +55,24 @@ jobs:
             git pull origin main
 
             if [ -f ".env" ]; then
-              echo "🛑 File .env sudah ada. Tidak membuat ulang."
-            else
-              echo "🧪 Membuat file .env dari secret..."
-              echo "${{ secrets.ENV_PROD }}" > .env
+              echo "🗑 Menghapus file .env.prod lama..."
+              rm .env
             fi
 
-            echo "🐳 Jalankan Docker Compose..."
-            ENV_FILE=.env PORT=3015 docker compose up -d --build
+            echo "🧪 Membuat file .env dari secret..."
+            echo "${{ secrets.ENV_PROD }}" > .env
 
-            echo "✅ Frontend berhasil dideploy!"
+      - name: 🐳 Build dan jalankan Docker
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            set -e
+            cd "${{ secrets.DIR_PROD }}"
+            echo "🚀 Docker Compose build tanpa cache..."
+            ENV_FILE=.env PORT=3015 docker compose up -d --build --no-cache
+
+      - name: ✅ Selesai
+        run: echo "✅ Deployment frontend selesai!"

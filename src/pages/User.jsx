@@ -189,7 +189,7 @@ const User = () => {
       ) : (
         <>
           <div className="flex justify-end">
-            <Button variant="success" size="sm" onClick={refetch}>
+            <Button variant="success" size="sm" onClick={setAddOpen}>
               <Plus className="w-4 h-4 mr-2" />
               Tambah
             </Button>
