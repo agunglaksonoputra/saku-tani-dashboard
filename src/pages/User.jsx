@@ -124,18 +124,19 @@ const User = () => {
 
     try {
       await create(payload);
-      await refetch();
 
       toast.success("User berhasil ditambahkan", { id: toastId });
 
-      setAddOpen(false);
       setNewUser({ username: "", password: "", role: "" });
     } catch (err) {
       console.error("Create gagal:", err);
       const errorMessage = err.response?.data?.message || err.message || "Terjadi kesalahan saat menambahkan";
       toast.error("Gagal menambahkan user: " + errorMessage, { id: toastId });
     } finally {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setAdding(false);
+      setAddOpen(false);
+      await refetch();
     }
   };
 
@@ -272,6 +273,7 @@ const User = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="operator">Operator</SelectItem>
                       <SelectItem value="user">User</SelectItem>
                       <SelectItem value="viewer">Viewer</SelectItem>
                     </SelectContent>
