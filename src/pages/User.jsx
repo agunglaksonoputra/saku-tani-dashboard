@@ -273,6 +273,7 @@ const User = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="operator">Operator</SelectItem>
                       <SelectItem value="user">User</SelectItem>
                       <SelectItem value="viewer">Viewer</SelectItem>
                     </SelectContent>

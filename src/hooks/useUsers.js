@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getUsers } from "../services/userService";
 
 export const useUsers = () => {
@@ -9,31 +9,32 @@ export const useUsers = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchUsers = async (page = currentPage) => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
-      const data = await getUsers(page);
+      const data = await getUsers(currentPage);
       setUsers(data.users || []);
       setTotalPages(data.totalPages || 1);
-      setCurrentPage(data.currentPage || page);
       setTotalItems(data.totalItems || 0);
     } catch (err) {
       setError(err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage]);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
       setCurrentPage(page);
-      fetchUsers(page);
     }
   };
+
+  const refetch = () => fetchUsers();
 
   return {
     users,
@@ -43,6 +44,6 @@ export const useUsers = () => {
     loading,
     error,
     goToPage,
-    refetch: () => fetchUsers(currentPage),
+    refetch,
   };
 };
