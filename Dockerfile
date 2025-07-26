@@ -2,7 +2,12 @@ FROM node:18
 
 WORKDIR /app
 
+
+ARG ENV_FILE=.env
+
 COPY . .
+
+COPY ${ENV_FILE} .env
 
 RUN npm install
 
