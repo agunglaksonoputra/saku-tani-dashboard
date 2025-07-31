@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Trash2, Eye, Trash2Icon } from "lucide-react";
+import { MoreHorizontal, Trash2, Eye, Trash2Icon, FilePen } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency, formatDate, formatDecimalSmart, formatWeight, capitalizeFirst } from "@/utils/formatters";
@@ -106,17 +106,11 @@ const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
                       <p>View</p>
                     </TooltipContent>
                   </Tooltip>
-                  {isMoreThan3Days(sale.date) ? (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="secondary" disabled>
-                          <Trash2Icon />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Tidak bisa dihapus (lebih dari 3 hari)</p>
-                      </TooltipContent>
-                    </Tooltip>
+
+                  {isMoreThan3Days(sale.createdAt) ? (
+                    <Button variant="secondary" disabled>
+                      <Trash2Icon />
+                    </Button>
                   ) : (
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -125,7 +119,7 @@ const SalesTable = ({ sales, loading, pagination, onDelete, onView }) => {
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Hapus</p>
+                        <p>Delete</p>
                       </TooltipContent>
                     </Tooltip>
                   )}

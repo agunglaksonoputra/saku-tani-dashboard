@@ -23,6 +23,19 @@ export const useSalesForm = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const resetForm = () => ({
+    date: "",
+    customer: "",
+    item_name: "",
+    unit: "",
+    quantity: "",
+    weight_per_unit_gram: "",
+    total_weight_kg: "",
+    price_per_unit: "",
+    total_price: "",
+    notes: "",
+  });
+
   // Update date when selectedDate changes
   useEffect(() => {
     if (selectedDate) {
@@ -75,6 +88,8 @@ export const useSalesForm = () => {
       toast.error(apiMessage);
       setError(apiMessage);
     } finally {
+      setFormData(resetForm());
+      setSelectedDate(null);
       setLoading(false);
     }
   };
