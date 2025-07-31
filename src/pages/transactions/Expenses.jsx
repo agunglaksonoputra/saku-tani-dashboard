@@ -124,19 +124,36 @@ const Expenses = () => {
                 <table className="w-full text-sm table-auto border-separate border-spacing-y-2">
                   <tbody>
                     <tr>
+                      <td className="font-medium">Tanggal</td>
+                      <td>:</td>
+                      <td>{formatDate(selectedExpenses.date)}</td>
+                    </tr>
+                    <tr>
                       <td className="font-medium w-1/3">Nama</td>
                       <td className="w-4">:</td>
                       <td>{selectedExpenses.name}</td>
                     </tr>
                     <tr>
-                      <td className="font-medium">Unit</td>
-                      <td>:</td>
-                      <td>{selectedExpenses.unit}</td>
-                    </tr>
-                    <tr>
                       <td className="font-medium">Quantity</td>
                       <td>:</td>
-                      <td>{formatDecimalSmart(selectedExpenses.quantity)}</td>
+                      <td>
+                        {formatDecimalSmart(selectedExpenses.quantity)} {selectedExpenses.unit}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Ongkir</td>
+                      <td>:</td>
+                      <td>{formatCurrency(selectedExpenses.shipping_cost)}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Diskon</td>
+                      <td>:</td>
+                      <td>{formatCurrency(selectedExpenses.discount)}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Haga per Unit</td>
+                      <td>:</td>
+                      <td>{formatCurrency(selectedExpenses.price_per_unit)}</td>
                     </tr>
                     <tr>
                       <td className="font-medium">Total Harga</td>
@@ -144,9 +161,9 @@ const Expenses = () => {
                       <td>{formatCurrency(selectedExpenses.total_price)}</td>
                     </tr>
                     <tr>
-                      <td className="font-medium">Tanggal</td>
+                      <td className="font-medium">Keterangan</td>
                       <td>:</td>
-                      <td>{formatDate(selectedExpenses.date)}</td>
+                      {selectedExpenses.note == null ? <td>-</td> : <td>{selectedExpenses.note}</td>}
                     </tr>
                     <tr>
                       <td className="font-medium">Dibuat oleh</td>

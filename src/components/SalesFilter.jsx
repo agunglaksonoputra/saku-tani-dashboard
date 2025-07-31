@@ -32,9 +32,9 @@ const SalesFilter = ({ filters, onFilterChange, onClearFilters }) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Customer Filter */}
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <label className="text-sm font-medium">Pelanggan</label>
             <Select value={filters.customer} onValueChange={(value) => handleSelectChange("customer", value)}>
               <SelectTrigger>
@@ -52,7 +52,7 @@ const SalesFilter = ({ filters, onFilterChange, onClearFilters }) => {
           </div>
 
           {/* Date From Filter */}
-          <div className="space-y-2 w-fit">
+          <div className="flex flex-col gap-2 w-fit">
             <label className="text-sm font-medium">Tanggal Mulai</label>
             <div className="relative">
               <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
@@ -61,7 +61,7 @@ const SalesFilter = ({ filters, onFilterChange, onClearFilters }) => {
           </div>
 
           {/* Date To Filter */}
-          <div className="space-y-2 w-fit">
+          <div className="flex flex-col gap-2 w-fit">
             <label className="text-sm font-medium">Tanggal Akhir</label>
             <div className="relative">
               <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />

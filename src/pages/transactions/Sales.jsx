@@ -136,14 +136,21 @@ const Sales = () => {
                       <td>{capitalizeFirst(selectedSale.item_name)}</td>
                     </tr>
                     <tr>
-                      <td className="font-medium">Unit</td>
-                      <td>:</td>
-                      <td>{selectedSale.unit}</td>
-                    </tr>
-                    <tr>
                       <td className="font-medium">Quantity</td>
                       <td>:</td>
-                      <td>{formatDecimalSmart(selectedSale.quantity)}</td>
+                      <td>
+                        {formatDecimalSmart(selectedSale.quantity)} {selectedSale.unit}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Berat per gram</td>
+                      <td>:</td>
+                      <td>{formatDecimalSmart(selectedSale.weight_per_unit_gram)} g</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Harga per satuan</td>
+                      <td>:</td>
+                      <td>{formatCurrency(selectedSale.price_per_unit)}</td>
                     </tr>
                     <tr>
                       <td className="font-medium">Total Berat</td>
@@ -159,6 +166,11 @@ const Sales = () => {
                       <td className="font-medium">Tanggal</td>
                       <td>:</td>
                       <td>{formatDate(selectedSale.date)}</td>
+                    </tr>
+                    <tr>
+                      <td className="font-medium">Keterangan</td>
+                      <td>:</td>
+                      {selectedSale.note == null ? <td>-</td> : <td>{selectedSale.note}</td>}
                     </tr>
                     <tr>
                       <td className="font-medium">Dibuat oleh</td>
