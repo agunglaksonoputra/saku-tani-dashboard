@@ -22,6 +22,18 @@ export const useExpensesForm = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const resetForm = () => ({
+    date: "",
+    name: "",
+    unit: "",
+    quantity: "",
+    price_per_unit: "",
+    shipping_cost: "",
+    discount: "",
+    total_price: "",
+    notes: "",
+  });
+
   // Update date when selectedDate changes
   useEffect(() => {
     if (selectedDate) {
@@ -75,6 +87,8 @@ export const useExpensesForm = () => {
       toast.error(apiMessage);
       setError(apiMessage);
     } finally {
+      setFormData(resetForm());
+      setSelectedDate(null);
       setLoading(false);
     }
   };

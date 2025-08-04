@@ -50,7 +50,7 @@ const ProfitShareTabel = ({ profitShare, loading, onDelete }) => {
                   <div className="text-sm">{formatDate(item.date)}</div>
                 </TableCell>
                 <TableCell>
-                  {isMoreThan3Days(item.date) ? (
+                  {isMoreThan3Days(item.createdAt) ? (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button variant="secondary" disabled>
