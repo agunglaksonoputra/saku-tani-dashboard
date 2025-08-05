@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatCurrencyWithoutSymbol, formatMonthYear } from "@/utils/formatters";
+import { formatCurrencyWithoutSymbol, formatMonthYearShort } from "@/utils/formatters";
 
 const ReportTable = ({ report, loading }) => {
   if (loading) {
@@ -125,7 +125,7 @@ const ReportTable = ({ report, loading }) => {
               <TableRow key={report.id} className="hover:bg-gray-50">
                 <TableCell className="font-medium border border-gray-200">{index + 1}</TableCell>
                 <TableCell className="border border-gray-200">
-                  <div className="text-sm text-center">{formatMonthYear(report.date)}</div>
+                  <div className="text-sm text-center">{formatMonthYearShort(report.date)}</div>
                 </TableCell>
                 <TableCell className="border border-gray-200">
                   <div className="text-sm text-gray-600 text-right">{formatCurrencyWithoutSymbol(report.total_sales)}</div>
@@ -136,11 +136,14 @@ const ReportTable = ({ report, loading }) => {
                 <TableCell className="border border-gray-200">
                   <div className="text-sm text-gray-600 text-right">{formatCurrencyWithoutSymbol(report.total_profit)}</div>
                 </TableCell>
-                {report.profitshare.map((item) => (
-                  <TableCell key={item.id} className="border border-gray-200">
-                    <div className="text-sm text-gray-600 text-right">{formatCurrencyWithoutSymbol(item.amount)}</div>
-                  </TableCell>
-                ))}
+                {[1, 2, 3].map((ownerId) => {
+                  const item = report.profitshare?.find((w) => w.owner_id === ownerId) || { amount: 0 };
+                  return (
+                    <TableCell key={ownerId} className="border border-gray-200">
+                      <div className="text-sm text-gray-600 text-right">{formatCurrencyWithoutSymbol(item.amount)}</div>
+                    </TableCell>
+                  );
+                })}
                 {[1, 2, 3].map((ownerId) => {
                   const item = report.withdraw?.find((w) => w.owner_id === ownerId) || { amount: 0 };
                   return (

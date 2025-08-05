@@ -93,7 +93,7 @@ const ExpensesTable = ({ expenses, loading, pagination, onDelete, onView }) => {
                       <p>View</p>
                     </TooltipContent>
                   </Tooltip>
-                  {isMoreThan3Days(expense.date) ? (
+                  {isMoreThan3Days(expense.createdAt) ? (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button variant="secondary" disabled>

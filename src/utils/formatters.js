@@ -55,6 +55,15 @@ export const formatMonthYear = (dateInput) => {
   });
 };
 
+export const formatMonthYearShort = (dateInput) => {
+  const date = new Date(dateInput);
+  if (isNaN(date)) return "";
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+  });
+};
+
 export const formatCurrencyWithoutSymbol = (amount) => {
   const num = parseFloat(amount);
   if (isNaN(num)) return "0";
