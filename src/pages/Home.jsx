@@ -3,9 +3,10 @@ import MainLayout from "@/layouts/Main";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { SectionCards } from "@/components/section-card";
 import { useDashboard } from "@/hooks/useDashboard";
+import BasicBars from "@/components/MatrixPanel.jsx";
 
 const Home = () => {
-  const { report, loading } = useDashboard();
+  const { report, reportMatrix, loading } = useDashboard();
 
   const breadcrumb = (
     <Breadcrumb>
@@ -20,6 +21,7 @@ const Home = () => {
   return (
     <MainLayout header={breadcrumb}>
       <SectionCards report={report} loading={loading} />
+      <BasicBars reportMatrix={reportMatrix} />
     </MainLayout>
   );
 };
