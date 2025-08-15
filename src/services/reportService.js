@@ -17,4 +17,9 @@ export const reportService = {
     const response = await apiClient.get(`/report/current`);
     return response.data;
   },
+
+  getMonthlyReport: async () => {
+    const response = await apiClient.get(`/report/`);
+    return response.data;
+  },
 };
